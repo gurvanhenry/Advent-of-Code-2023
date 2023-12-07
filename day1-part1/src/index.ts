@@ -8,7 +8,7 @@ import {
   sumValues,
 } from './lib';
 
-console.log('🐈 AoC 2023 - day 1 🦮');
+console.log('🐈 AoC 2023 - day 1 part 1 🦮');
 
 const text = getDataFromFile('src/data/input.txt');
 const lines = convertTextToArrayOfLines(text);

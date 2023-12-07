@@ -5,6 +5,7 @@ import {
   getFirstDigit,
   getLastDigit,
   joinDigits,
+  regexMatchWithOverlapping,
   sumValues,
 } from './lib';
 
@@ -22,6 +23,15 @@ describe('convert text to array of lines', () => {
     const lines = convertTextToArrayOfLines(text);
     expect(lines).toHaveLength(3);
     expect(lines[0]).toBe('line1');
+  });
+});
+
+describe('regex with overlapping', () => {
+  test('eight and two', () => {
+    const text = '1one-eightwo3';
+    const regex = /one|eight|two/g;
+    const results = regexMatchWithOverlapping(text, regex);
+    expect(results).toEqual(['one', 'eight', 'two']);
   });
 });
 
@@ -68,6 +78,53 @@ describe('get digit', () => {
     expect(firstDigit).toBe('1');
     const lastDigit: string = getLastDigit('-45-----');
     expect(lastDigit).toBe('5');
+  });
+
+  describe('new request: digit can be written with letters', () => {
+    test('just a "one"', () => {
+      const firstDigit: string = getFirstDigit('--one-8-two-nine--');
+      expect(firstDigit).toBe('1');
+    });
+
+    test('edge case #1', () => {
+      const firstDigit: string = getFirstDigit('--8-one-two-nine--');
+      expect(firstDigit).toBe('8');
+    });
+
+    test('edge case #2 - only number in letter', () => {
+      const firstDigit: string = getFirstDigit('--two-nine--');
+      expect(firstDigit).toBe('2');
+    });
+
+    test('edge case #3 - no number in letter', () => {
+      const firstDigit: string = getFirstDigit('--1-2--');
+      expect(firstDigit).toBe('1');
+    });
+
+    test('edge case #4 - only number in letter', () => {
+      const firstDigit: string = getFirstDigit('--one--');
+      expect(firstDigit).toBe('1');
+    });
+
+    test('last digit - number-in-letter', () => {
+      const lastDigit: string = getLastDigit('--one-8-two-nine--');
+      expect(lastDigit).toBe('9');
+    });
+
+    test('last digit - number', () => {
+      const lastDigit: string = getLastDigit('--nine-4');
+      expect(lastDigit).toBe('4');
+    });
+
+    test('edge cas #5 - same number begin and end (need last index)', () => {
+      const lastDigit: string = getLastDigit('3onesix3');
+      expect(lastDigit).toBe('3');
+    });
+
+    test('edge cas #5 - overlapping word', () => {
+      const lastDigit: string = getLastDigit('one--eightwor');
+      expect(lastDigit).toBe('2');
+    });
   });
 });
 
