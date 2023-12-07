@@ -1,6 +1,11 @@
+import fs from 'fs';
+
 console.log('🐈 AoC 2023 - day _ - part_ 🦮');
 
-// TODO
+const input = fs.readFileSync('src/data/input.txt').toString();
+console.log(input);
+
+// TODO 👨‍💻
 
 const result = 0;
 
